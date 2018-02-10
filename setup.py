@@ -1,0 +1,9 @@
+setup(name='snake_pit',
+      version='0.1',
+      description='Multi-processing task handler.',
+      url='http://github.com/storborg/funniest',
+      author='Salvatore Tosti',
+      author_email='saltosti@gmail.com',
+      license='MIT',
+      packages=['snake_pit'],
+      zip_safe=False)
