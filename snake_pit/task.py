@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod,ABCMeta
 from multiprocessing import Pool
 from random import shuffle
 import itertools
@@ -37,37 +37,44 @@ class Task(ABC):
     @property
     def results(self):  
         if self.done:
-            self._results.update({'cancelled' : self._cancelled})
             return self._results
         return None
     
     @property
     def status(self):
         return {'cancelled' : self._cancelled}
+    
+    def _kill(self):
+        self._pool._state = multiprocessing.pool.TERMINATE
+        self._pool._worker_handler._state = multiprocessing.pool.TERMINATE
+        for process in self._pool._pool:
+            os.kill(process.pid, signal.SIGKILL)
+        while any(process.is_alive() for process in self._pool._pool):
+            pass
+        self._pool.terminate()
         
     def cancel(self):
         if self.done:
             return
         self._cancelled = True
-        self._pool.close()
-        self._pool.join()
+        self._kill()
         
+    @staticmethod
     @abstractmethod
     def _parallelStep(iterableArg):
         pass
     
-    @abstractmethod
-    def _processResult(results):
-        pass
+    def _processResults(self,results):
+        return results;
     
-    @abstractmethod
-    def _createIterableList(self, *args):
-        pass
+    def _createIterableList(self, args):
+        return args;
         
-    def _callback(self, results):
-        self._results = Task._processResult(results)
+    def _callback(self, args):
+        self._results = self._processResults(args)
     
-    def run(self, *args):
+    def run(self, args):
         iterableArgList = self._createIterableList(args);
-        self._mResult = self._pool.map_async(Task._parallelStep, iterableArgList, callback=self._callback, chunksize=1)
+        func = type(self)._parallelStep #Work around since map_async requires static function
+        self._mResult = self._pool.map_async(func, iterableArgList, callback=self._callback, chunksize=1)
         self._total = self._mResult._number_left
