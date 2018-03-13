@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod,ABCMeta
-from multiprocessing import Pool
+import multiprocessing
+import os
+import signal
 from random import shuffle
 import itertools
 import uuid
@@ -10,7 +12,7 @@ class Task(ABC):
         self._id = uuid.uuid1()
         self._results = None
         self._total = 0
-        self._pool = Pool()
+        self._pool = multiprocessing.Pool()
         self._mResult = None
         self._cancelled = False
     
