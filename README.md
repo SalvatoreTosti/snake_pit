@@ -46,4 +46,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-# [Pit Of Snakes](https://www.youtube.com/watch?v=B_cNbuH33B4)
+* [Pit Of Snakes](https://www.youtube.com/watch?v=B_cNbuH33B4)
