@@ -66,7 +66,7 @@ class Task(ABC):
     def _parallelStep(iterableArg):
         pass
     
-    def _processResults(self,results):
+    def _processResults(self, results):
         return results;
     
     def _createIterableList(self, args):

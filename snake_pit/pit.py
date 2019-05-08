@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod,ABCMeta
+from abc import ABC, abstractmethod, ABCMeta
 from task import Task
 
 class Pit(ABC):
@@ -23,7 +23,7 @@ class Pit(ABC):
     def instantiateTask(self, args):
         pass
     
-    def done(self,taskID):
+    def done(self, taskID):
         if taskID in self._activeTasks:
             return self._activeTasks[taskID].done
             
@@ -35,15 +35,14 @@ class Pit(ABC):
         if taskID in self._activeTasks:
             return self._activeTasks[taskID].status
             
-    def progress(self,taskID):
-        print (taskID in self._activeTasks)
+    def progress(self, taskID):
         if taskID in self._activeTasks:
             return self._activeTasks[taskID].progress
             
-    def cancel(self,taskID):
+    def cancel(self, taskID):
         if taskID in self._activeTasks:
             return self._activeTasks[taskID].cancel()
 
-    def cleanup(self,taskID):
+    def cleanup(self, taskID):
         if taskID in self._activeTasks:
             self._activeTasks.pop(taskID)
